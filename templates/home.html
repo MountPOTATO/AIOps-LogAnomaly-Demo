@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+<body>
+
+
+    <div class="left-view" type="text/css" href="../static/styles.css">
+
+	<header>
+        <div class="container">
+            <div id="brandname">
+                Machine Learning App with Flask
+            </div>
+		<h2>AIOps Log Anomaly Detection</h2>
+	    </div>
+	</header>
+
+    <form method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data">
+        <div class="set-area">
+            <!--过滤出txt和log，可以在里面加-->
+            <input name="file-dir" type="file" id="file-input" accept=".txt,.log">
+            <br>
+                    <label>
+                        <p>选择处理模型</p>
+                        <select class="model-select" name="model-name" type="submit" >
+                          <option value ="Encoder">Encoder</option>
+                          <option value ="LogAnomaly">LogAnomaly</option>
+                          <option value="opel">Opel</option>
+                        </select>
+                    </label>
+                    <input type="submit" class="btn-info" value="predict">
+        </div>
+    </form>
+        <button id="read-button">读取日志</button>
+            <br>
+            <label for="file-contents"></label>
+            <textarea class="log-preview-area" readonly="readonly" rows="10" cols="40" id="file-contents"></textarea>
+
+            <script id="show">
+                document.querySelector("#read-button").addEventListener('click', function() {
+                    let file = document.querySelector("#file-input").files[0];
+                    let reader = new FileReader();
+                    reader.addEventListener('load', function(e) {
+                        document.querySelector("#file-contents").textContent = e.target.result;
+                    });
+                    reader.readAsText(file);
+                });
+            </script>
+
+    </div>
+
+    <div class="right-view">
+
+    </div>
+
+</body>
+</html>
