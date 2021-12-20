@@ -71,8 +71,8 @@ class Encoder(nn.Module):
         """
 
         # src=[batch_size, seq len,embedding_dim]
-
-        print("输入：",src)
+        #
+        # print("输入：",src)
 
         batch_size = src.shape[0]
         seq_len = src.shape[1]
@@ -95,7 +95,7 @@ class Encoder(nn.Module):
         src = (src + self.pos_embedding(pos))
         # src = self.pos_encoding(src)
 
-        print("位置编码后结果：", src)
+        # print("位置编码后结果：", src)
 
         # 经过n_encoders个Encoder编码
         for single_encoder in self.layers:

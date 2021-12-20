@@ -1,10 +1,38 @@
+# coding:utf-8
+"""
+@file: .py
+@author: dannyXSC
+@ide: PyCharm
+@createTime: 2021年12月20日 20点23分
+@Function: 请描述这个py文件的作用
+"""
+import torch
+import torch.nn as nn
+import time
+import math
 import numpy as np
+from torch.optim import optimizer
+from torch.utils.data import Dataset
 
-from transformer.process.bgl_preprocessor import log_index_sequence_to_vec
+from bgl_preprocessor import log_index_sequence_to_vec
 
-from transformer.encoder.Encoder import *
+from Encoder.Encoder import *
 
 PADDING_INDEX = 1
+
+
+class MyDataset(Dataset):
+    def __init__(self, df, pattern_to_indexList):
+        self.x_data = [pattern_to_indexList[str(pattern_id)] for pattern_id in df['id'].values]
+        self.y_data = df['label'].values
+
+        self.length = len(self.y_data)
+
+    def __getitem__(self, index):
+        return torch.tensor(self.x_data[index]), self.y_data[index]
+
+    def __len__(self):
+        return self.length
 
 
 class SelfAttentive(nn.Module):
@@ -89,8 +117,7 @@ def train(model, INDEX_TO_TENSOR, NN_EMBEDDING, INDEX_VEC_PATH, iterator,
     epoch_loss = 0
 
     for i, batch in enumerate(iterator):
-        src = torch.tensor(batch[0], dtype=torch.float, requires_grad=True)
-        trg = torch.tensor(batch[1], dtype=torch.float, requires_grad=False)
+        src, trg = batch
 
         optimizer.zero_grad()
         # print("train src1:", src[6])
@@ -144,10 +171,7 @@ def evaluate(model, INDEX_TO_TENSOR, NN_EMBEDDING, INDEX_VEC_PATH, iterator,
 
     with torch.no_grad():
         for i, batch in enumerate(iterator):
-            src = torch.tensor(batch[0], dtype=torch.float, requires_grad=True)
-            trg = torch.tensor(batch[1],
-                               dtype=torch.float,
-                               requires_grad=False)
+            src, trg = batch
 
             # print("eval src1:", src[6])
 
@@ -189,10 +213,7 @@ def evaluateEpsilon(model, INDEX_TO_TENSOR, NN_EMBEDDING, INDEX_VEC_PATH,
 
     with torch.no_grad():
         for i, batch in enumerate(iterator):
-            src = torch.tensor(batch[0], dtype=torch.float, requires_grad=True)
-            trg = torch.tensor(batch[1],
-                               dtype=torch.float,
-                               requires_grad=False)
+            src, trg = batch
 
             # output = model(src, INDEX_TO_TENSOR)
             src_mask = make_src_mask(src, PADDING_INDEX)
@@ -342,8 +363,8 @@ def train_model(N_HEADES,
 
         start_time = time.time()
 
-        epsilon_loss = evaluateEpsilon(model, INDEX_TO_TENSOR, NN_EMBEDDING,
-                                       INDEX_VEC_PATH, VALID_ITERATOR, epsilon)
+        epsilon_loss, _, _, _, _ = evaluateEpsilon(model, INDEX_TO_TENSOR, NN_EMBEDDING,
+                                                   INDEX_VEC_PATH, VALID_ITERATOR, epsilon)
 
         end_time = time.time()
 
@@ -398,4 +419,8 @@ def test_model(N_HEADES,
     F1 = 2 * r * p / (r + p)
     acc = (TP + TN) / (TP + TN + FP + FN)
 
-    return p, r, F1, acc
+    print(f'| Test Loss: {test_loss:.3f} |')
+    print(f'| Test Precision: {p:.3f} |')
+    print(f'| Test Recall: {r:.3f} |')
+    print(f'| Test F-Score: {F1:.3f} |')
+    print(f'| Test Accuracy: {acc:.3f} |')
