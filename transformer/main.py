@@ -153,10 +153,22 @@ def transformer_test(log_list):
     F1 = 2 * r * p / (r + p)
     acc = (TP + TN) / (TP + TN + FP + FN)
 
-    print(pred_res)
-    print(f'| Test Precision: {p:.3f} |')
-    print(f'| Test Recall: {r:.3f} |')
-    print(f'| Test F-Score: {F1:.3f} |')
-    print(f'| Test Accuracy: {acc:.3f} |')
+    # print(pred_res)
+    # print(f'| Test Precision: {p:.3f} |')
+    # print(f'| Test Recall: {r:.3f} |')
+    # print(f'| Test F-Score: {F1:.3f} |')
+    # print(f'| Test Accuracy: {acc:.3f} |')
 
-    return pred_res
+
+
+    result_list=[i for i in log_list if i[0]!='-']
+    result_str="\n".join(result_list)
+
+    result_dict=dict()
+    result_dict["异常日志数量"]=str(int(len(result_list)*acc))
+    result_dict["测试准确率"]=str(format(acc,".2%"))
+
+
+
+    # return pred_res
+    return result_str,result_dict

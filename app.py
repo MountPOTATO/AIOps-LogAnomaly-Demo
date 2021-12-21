@@ -11,20 +11,24 @@ def home():
 
 @app.route('/predict', methods=["POST"])
 def predict():
+
+
     model_name, log_file = None, None
     if request.method == 'POST':
-        # model_name = request.form['model-name']
+        model_name = request.form['model-name']
         # log_file = request.files['file-dir']
 
-        if 1:
+        if model_name == "Encoder":
             # if model_name == "Encoder":
-            file = request.files.get('file')
+            file = request.files.get('file-dir')
             content = file.read().decode("utf-8")
             log_list = content.split("\n")
 
-            transformer_test(log_list)
+            result_log_str,result_dict = transformer_test(log_list)
 
-            return "123"
+            return render_template('result.html',log_str=result_log_str, table_dict=result_dict)
+
+
 
 if __name__ == '__main__':
     app.run()

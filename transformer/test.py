@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 '''
  # @Project     : self-attentive
- # @File        : test.py.py
+ # @File        : transformer_script.py.py
  # #@Author     : mount_potato
  # @Date        : 2021/11/6 9:20 下午
  # @Description :
@@ -59,7 +59,7 @@ def extract_feature():
     训练、测试、验证的日志序列的集合(格式包含Sequence id, Label)
     :return: None
     """
-    generate_train_=and_test_file(origin_log_path, out_dic_path,
+    generate_train_and_test_file(origin_log_path, out_dic_path,
                                  train_out_file_name, validation_out_file_name,
                                  test_out_file_name, train_file_maxsize,
                                  validation_file_maxsize)

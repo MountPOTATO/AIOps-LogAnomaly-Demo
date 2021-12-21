@@ -6,27 +6,23 @@
 </head>
 <body>
 
-	<header>
-		<div class="container">
-		<div id="brandname">
-			ML App
-		</div>
-		<h2>Spam Detector For SMS Messages</h2>
-
-	</div>
-	</header>
-	<p style="color:blue;font-size:20;text-align: center;"><b>Results for Comment</b></p>
-	<div class="results">
 
 
+    {%  block main %}
 
-	{% if prediction == 1%}
-	<h2 style="color:red;">Spam</h2>
-	{% elif prediction == 0%}
-	<h2 style="color:blue;">Not a Spam (It is a Ham)</h2>
-	{% endif %}
+        <label for="file-contents"></label>
+        <textarea readonly="readonly" rows="30" cols="150" id="file-contents">{{ log_str }}</textarea>
 
-	</div>
+        {% for key in table_dict %}
+            <li>{{key}}{{ table_dict[key] }}</li>
+        {% endfor %}
+
+
+    {% endblock %}
+
+
+
+
 
 </body>
 </html>

@@ -14,9 +14,10 @@ import numpy as np
 from torch.optim import optimizer
 from torch.utils.data import Dataset
 
-from bgl_preprocessor import log_index_sequence_to_vec
+# from bgl_preprocessor import log_index_sequence_to_vec
+from transformer.process.bgl_preprocessor import log_index_sequence_to_vec
 
-from Encoder.Encoder import *
+from transformer.encoder.Encoder import *
 
 PADDING_INDEX = 1
 
