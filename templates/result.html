@@ -11,7 +11,7 @@
     {%  block main %}
 
         <label for="file-contents"></label>
-        <textarea readonly="readonly" rows="30" cols="150" id="file-contents">{{ log_str }}</textarea>
+        <textarea readonly="readonly" cols="150" id="file-contents">{{ log_str }}</textarea>
 
         {% for key in table_dict %}
             <li>{{key}}{{ table_dict[key] }}</li>

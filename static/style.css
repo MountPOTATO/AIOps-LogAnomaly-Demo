@@ -11,7 +11,18 @@ body{
 	text-align: center;
 }
 
+.main-window{
+	align-content: center;
+	margin:auto;
+	width:70%;
+	height:100%;
+	border:  1px solid #3B6273;
+}
+
 header{
+	align-content: center;
+	margin:auto;
+	text-align:center;
 	background:#03A9F4;
 	border-bottom:#448AFF 3px solid;
 	height:120px;
@@ -20,13 +31,15 @@ header{
 
 }
 
+
 .main-header{
 			text-align:center;
 			background-color: blue;
 			height:100px;
-			width:100%;
+			width:70%;
 			margin:0px;
-		}
+}
+
 #brandname{
 	text-align: center;
 	font-size:19px;
@@ -42,10 +55,15 @@ header h2{
 
 
 
-.btn-info {background-color: #2196F3;
-	height:40px;
-	width:100px;} /* Blue */
-.btn-info:hover {background: #0b7dda;}
+.btn-info {background-color: #03A9F4;
+	margin-left:1%;
+	border-radius: 5px;
+
+} /* Blue */
+.btn-info:hover {
+	background: #0b7dda;
+	color: white;
+}
 
 
 .resultss{
@@ -56,28 +74,61 @@ header h2{
     height: 150px;
 }
 
-.left-view{
-	width: 50%;
-	height:100%;
-	border:  1px solid #3B6273;
-
+.info-view{
+	align-content: center;
+	margin:auto;
+	width: 100%;
+	height:400px;
 }
 
-.right-view{
-	width:50%;
-	float:left;
-	height:98%;
-	border: 1px solid #3B6273;
-}
 
 .log-preview-area{
-	width: 90%;
+	margin-top:2%;
+	margin-left:1%;
+	alignment: right;
+	text-align: center;
+	width: 97%;
 	border: 1px solid #3B6273;
-	resize: none;
-
 }
 
-.set-area{
-	text-align: center;
+.fileinput-button{
+	margin-left:1%;
+	margin-top:2%;
+	position: relative;
+	display: inline-block;
+}
 
+.model-select{
+	margin-left:1%;
+}
+
+.inner-left-area{
+	margin: 0.5%;
+	float:left;
+	width:47%;
+	height:386px;
+	position: relative;
+	border: 1px solid #3B6273;
+}
+
+.inner-right-area{
+	margin:0.5%;
+	float:right;
+	display: inline-block;
+	height:387px;
+	width:50%;
+	align-content: center;
+	position: relative;
+	border:  1px solid #3B6273;
+}
+
+.file-read-button{
+	margin-top:2%;
+	margin-left:1%;
+}
+
+#file-contents{
+	width:97%;
+	height:80%;
+	resize:none;
 }

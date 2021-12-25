@@ -7,40 +7,62 @@
 </head>
 <body>
 
+<div class="main-window">
 
-<div class="left-view" type="text/css" href="../static/styles.css">
-
-    <header>
-        <div class="container">
-            <div id="brandname">
-                Machine Learning App with Flask
-            </div>
-            <h2>AIOps Log Anomaly Detection</h2>
+<header>
+    <div class="container">
+        <div id="brandname">
+            Machine Learning App with Flask
         </div>
-    </header>
+        <h2>AIOps Log Anomaly Detection</h2>
+    </div>
+</header>
+
+<div class="info-view" type="text/css" href="../static/styles.css">
+
 
     <form method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data">
-        <div class="set-area">
+        <div class="inner-left-area">
             <!--过滤出txt和log，可以在里面加-->
+            <span class="fileinput-button">
             <input name="file-dir" type="file" id="file-input" accept=".txt,.log">
+            </span>
             <br>
             <label>
-                <p>选择处理模型</p>
+                <p style="margin-left:1%">选择处理模型</p>
                 <select class="model-select" name="model-name" type="submit">
                     <option value="Encoder">Encoder</option>
                     <option value="LogAnomaly">LogAnomaly</option>
                     <option value="LogTransfer">LogTransfer</option>
                 </select>
             </label>
-            <input type="submit" class="btn-info" value="predict">
+            <input style="margin-left:1%" type="submit" class="btn-info" value="predict">
+            <p style="margin-left:1%">日志详细信息</p>
+            <table id="log-info-table">
+                <thead></thead>
+                <tfoot></tfoot>
+                <tbody id="rows"></tbody>
+            </table>
         </div>
     </form>
-    <button id="read-button">读取日志</button>
+    <div class="inner-right-area">
+    <button class="file-read-button" id="read-button">读取日志</button>
     <br>
     <label for="file-contents"></label>
     <textarea class="log-preview-area" readonly="readonly" rows="10" cols="40" id="file-contents"></textarea>
 
     <script id="show">
+
+        document.querySelector("#file-dir").addEventListener('click',function (){
+            let file = document.querySelector("#file-input").files[0];
+            let reader = new FileReader();
+            reader.readAsText(file);
+
+            var table=document.querySelector("#log-info-table");
+            
+
+        });
+
         document.querySelector("#read-button").addEventListener('click', function () {
             let file = document.querySelector("#file-input").files[0];
             let reader = new FileReader();
@@ -50,10 +72,10 @@
             reader.readAsText(file);
         });
     </script>
-
+</div>
 </div>
 
-<div class="right-view">
+
 
 </div>
 
