@@ -1,5 +1,5 @@
-
 *.DS_Store
 *.vec
 *.pt
 *.idea
+*.__pycache__

@@ -9,7 +9,7 @@
 
 <div class="main-window">
 
-<header>
+<header class="header-1">
     <div class="container">
         <div id="brandname">
             Machine Learning App with Flask
@@ -18,14 +18,41 @@
     </div>
 </header>
 
-<div class="info-view" type="text/css" href="../static/styles.css">
+<div class="info-view" type="text/css" href="../static/style.css">
 
+    <script id="file-info-show">
+        function inputChanged(){
+            var ui=document.getElementById("log-display");
+            ui.style.display="";
+
+            let file = document.querySelector("#file-input").files[0];
+            let reader = new FileReader();
+
+
+            reader.onload=()=>{
+
+                var fileName=file.name;
+                var fileSize=file.size;
+                var fileType=file.name.substring(file.name.lastIndexOf('.')+1);
+                var logList=reader.result.replace(/\n/g,"@").split('@');
+                var logSum=logList.length;
+
+                var table=document.querySelector("#log-info-table")
+                table.rows[0].cells[1].innerHTML=fileName;
+                table.rows[1].cells[1].innerHTML=fileType;
+                table.rows[2].cells[1].innerHTML=fileSize/1000+" KB"
+                table.rows[3].cells[1].innerHTML=logSum;
+            }
+            reader.readAsText(file);
+        }
+
+    </script>
 
     <form method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data">
         <div class="inner-left-area">
             <!--过滤出txt和log，可以在里面加-->
             <span class="fileinput-button">
-            <input name="file-dir" type="file" id="file-input" accept=".txt,.log">
+            <input name="file-dir" type="file" id="file-input" accept=".txt,.log" onchange="inputChanged()">
             </span>
             <br>
             <label>
@@ -37,12 +64,27 @@
                 </select>
             </label>
             <input style="margin-left:1%" type="submit" class="btn-info" value="predict">
+            <div class="log-detail-area" id="log-display" style="display: none">
             <p style="margin-left:1%">日志详细信息</p>
-            <table id="log-info-table">
-                <thead></thead>
-                <tfoot></tfoot>
-                <tbody id="rows"></tbody>
+            <table class="log-table" id="log-info-table">
+                <tr>
+                    <td>日志文件名</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>日志文件类型</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>日志文件大小</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>日志消息总数</td>
+                    <td></td>
+                </tr>
             </table>
+            </div>
         </div>
     </form>
     <div class="inner-right-area">
@@ -53,16 +95,6 @@
 
     <script id="show">
 
-        document.querySelector("#file-dir").addEventListener('click',function (){
-            let file = document.querySelector("#file-input").files[0];
-            let reader = new FileReader();
-            reader.readAsText(file);
-
-            var table=document.querySelector("#log-info-table");
-            
-
-        });
-
         document.querySelector("#read-button").addEventListener('click', function () {
             let file = document.querySelector("#file-input").files[0];
             let reader = new FileReader();
@@ -70,14 +102,16 @@
                 document.querySelector("#file-contents").textContent = e.target.result;
             });
             reader.readAsText(file);
+
         });
     </script>
 </div>
 </div>
 
 
-
 </div>
+
+
 
 </body>
 </html>

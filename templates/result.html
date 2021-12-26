@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title></title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <meta charset="UTF-8">
+    <title>Result</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
 <body>
 
+<div class="main-window-2">
 
+    <header class="header-2">
+        <div class="container">
+            <div id="brandname">
+                Machine Learning App with Flask
+            </div>
+            <h2>AIOps Log Anomaly Result</h2>
+        </div>
+    </header>
 
+    <div class="info-view-2" type="text/css" href="../static/styles.css">
     {%  block main %}
 
+        <p style="margin-left:1%;margin-top:1%">预测异常日志结果</p>
+
         <label for="file-contents"></label>
-        <textarea readonly="readonly" cols="150" id="file-contents">{{ log_str }}</textarea>
+        <textarea style="margin-left:1%;height:300px;" readonly="readonly" cols="150" id="file-contents">{{ log_str }}</textarea>
 
+        <p style="margin-left:1%;margin-top:1%">详细数据</p>
+
+        <table style="margin-left:2%;">
         {% for key in table_dict %}
-            <li>{{key}}{{ table_dict[key] }}</li>
+            <tr>
+                <td>{{key}}</td>
+                <td>{{ table_dict[key] }}</td>
+            </tr>
         {% endfor %}
-
+        </table>
 
     {% endblock %}
+    </div>
 
-
+</div>
 
 
 

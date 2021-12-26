@@ -14,12 +14,20 @@ body{
 .main-window{
 	align-content: center;
 	margin:auto;
-	width:70%;
+	width:60%;
 	height:100%;
 	border:  1px solid #3B6273;
 }
 
-header{
+.main-window-2{
+	align-content: center;
+	margin:auto;
+	width:60%;
+	height:100%;
+	border:  1px solid #3B6273;
+}
+
+.header-1{
 	align-content: center;
 	margin:auto;
 	text-align:center;
@@ -28,9 +36,17 @@ header{
 	height:120px;
 	width:100%;
 	padding-top:30px;
-
 }
-
+.header-2{
+	align-content: center;
+	margin:auto;
+	text-align:center;
+	background:#009900;
+	border-bottom:#008000 3px solid;
+	height:120px;
+	width:100%;
+	padding-top:30px;
+}
 
 .main-header{
 			text-align:center;
@@ -81,12 +97,19 @@ header h2{
 	height:400px;
 }
 
+.info-view-2{
+	align-content: center;
+	margin:auto;
+	width: 100%;
+	height:600px;
+}
+
 
 .log-preview-area{
 	margin-top:2%;
 	margin-left:1%;
 	alignment: right;
-	text-align: center;
+	text-align: left;
 	width: 97%;
 	border: 1px solid #3B6273;
 }
@@ -132,3 +155,37 @@ header h2{
 	height:80%;
 	resize:none;
 }
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+td,th {
+    padding: 0;
+}
+.log-table ,.result-table{
+	margin-left:2%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 1px solid #cbcbcb;
+}
+
+.log-table caption ,.result-table caption{
+    color: #000;
+    font: italic 85%/1 arial,sans-serif;
+    padding: 1em 0;
+    text-align: left;
+}
+
+.log-table  td,.log-table  th ,.result-table td,.result-table th{
+    border-left: 1px solid #cbcbcb;
+	font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding: .5em 1em;
+}
+
+
+
+
