@@ -27,7 +27,6 @@ def predict():
 
         elif model_name == "LogAnomaly":
             # 娄天宇组把代码加在这里,下面是文件输入
-
             # 这部分需要你事先预装Flask，请自行pip install一下
             # 这部分的函数触发将在选择了日志文件，点击了predict按钮后运行
             # 文件的导入在home.html里面点击选择文件按钮，选择你的文件就可以了
