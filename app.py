@@ -51,7 +51,7 @@ def predict():
             #render_template('result.html',log_str=变量1, table_dict=变量2)
 
 
-            pass
+
 
         elif model_name == "LogTransfer":
             #郑逸玺组把代码加在这里,下面是文件输入
@@ -79,7 +79,7 @@ def predict():
             '''
             #你的最终输出参考上面Encoder部分中的return值
             #render_template('result.html',log_str=变量1, table_dict=变量2)
-            pass
+
 
 if __name__ == '__main__':
     app.run()
