@@ -2,9 +2,10 @@ import json
 import time
 import pandas
 import torch
+#from LogAnomaly_Train import Model
 from torch import nn
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 class Model(nn.Module):
     def __init__(self, input_size_0, input_size_1, hidden_size, num_of_layers, out_size):
         super(Model, self).__init__()
@@ -15,11 +16,11 @@ class Model(nn.Module):
         self.fc = nn.Linear(2 * hidden_size, out_size)
 
     def forward(self, input_0, input_1):
-        h0_0 = torch.zeros(self.num_of_layers, input_0.size(0), self.hidden_size).to(device)
-        c0_0 = torch.zeros(self.num_of_layers, input_0.size(0), self.hidden_size).to(device)
+        h0_0 = torch.zeros(self.num_of_layers, input_0.size(0), self.hidden_size)
+        c0_0 = torch.zeros(self.num_of_layers, input_0.size(0), self.hidden_size)
         out_0, _ = self.lstm0(input_0, (h0_0, c0_0))
-        h0_1 = torch.zeros(self.num_of_layers, input_1.size(0), self.hidden_size).to(device)
-        c0_1 = torch.zeros(self.num_of_layers, input_1.size(0), self.hidden_size).to(device)
+        h0_1 = torch.zeros(self.num_of_layers, input_1.size(0), self.hidden_size)
+        c0_1 = torch.zeros(self.num_of_layers, input_1.size(0), self.hidden_size)
         out_1, _ = self.lstm1(input_1, (h0_1, c0_1))
         multi_out = torch.cat((out_0[:, -1, :], out_1[:, -1, :]), -1)
         fc_out = self.fc(multi_out)
@@ -43,30 +44,28 @@ def loganomaly_run(test_file):
     num_candidates = 5
     threshold = 3.714397962539806e-07
 
-    logparser_structed_file = './loganomaly/drain_result/HDFS_split_40w.log_structured.csv'
-    logparser_event_file = './loganomaly/drain_result/HDFS_split_40w.log_templates.csv'
-    anomaly_label_file = './loganomaly/drain_result/anomaly_label.csv'
+    logparser_structed_file = './drain_result/HDFS_split_40w.log_structured.csv'
+    logparser_event_file = './drain_result/HDFS_split_40w.log_templates.csv'
+    anomaly_label_file = './drain_result/anomaly_label.csv'
 
-    sequential_directory = './loganomaly/sequential_files/'
+    sequential_directory = './sequential_files/'
     train_file_name = 'loganomaly_train_file'
     test_file_name = 'loganomaly_test_file'
     valid_file_name = 'loganomaly_valid_file'
 
     train_file = sequential_directory + train_file_name
     test_file = sequential_directory + test_file_name
-    model_out_path = './loganomaly/output/'
+    model_out_path = './output/Adam_batch_size=512;epoch=30.pt'
 
     wordvec_file_path = 'G:\\crawl-300d-2M.vec'
-    pattern_vec_out_path = './loganomaly/drain_result/pattern_vec'
-    result_str, result_dict = do_predict(window_length, input_size_sequential, input_size_quantitive, hidden_size, num_of_layers, num_of_classes,
+    pattern_vec_out_path = './drain_result/pattern_vec'
+    do_predict(window_length, input_size_sequential, input_size_quantitive, hidden_size, num_of_layers, num_of_classes,
                model_out_path + 'Adam_batch_size=' + str(batch_size) + ';epoch=' + str(num_epochs) + '.pt',
                test_file, pattern_vec_out_path, num_candidates, threshold)
 
-    return result_str, result_dict
-
 
 def load_model(input_size_1, input_size_2, hidden_size, num_layers, num_classes, model_path):
-    model = Model(input_size_1, input_size_2, hidden_size, num_layers, num_classes).to(device)
+    model = Model(input_size_1, input_size_2, hidden_size, num_layers, num_classes)
     model.load_state_dict(torch.load(model_path, map_location='cpu'))
     model.eval()
     print('model_path: {}'.format(model_path))
@@ -128,8 +127,8 @@ def linePrediction_Threshold(predicted, label, threshold):
     return abnormal_flag
 
 
-"""The general idea is that since the label is attached to each block (each line), the window(length=5) is 
-moved down each line. As the window moves down each line, if the predicted result doesn't match the ground 
+"""The general idea is that since the label is attached to each block (each line), the window(length=5) is
+moved down each line. As the window moves down each line, if the predicted result doesn't match the ground
 truth in any of these windows, this block (this line) is flagged as abnormal. """
 
 
@@ -207,8 +206,8 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
             seq = batch_input_sequential
             quan = batch_input_quantitative
 
-            seq = torch.tensor(seq, dtype=torch.float).view(-1, window_length, input_size_sequential).to(device)
-            quan = torch.tensor(quan, dtype=torch.float).view(-1, window_length, input_size_quantitive).to(device)
+            seq = torch.tensor(seq, dtype=torch.float).view(-1, window_length, input_size_sequential)
+            quan = torch.tensor(quan, dtype=torch.float).view(-1, window_length, input_size_quantitive)
             # print(seq.shape, quan.shape)
             test_output = model(seq, quan)
             # print(test_output.shape)
@@ -298,8 +297,8 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
             seq = batch_input_sequential
             quan = batch_input_quantitative
 
-            seq = torch.tensor(seq, dtype=torch.float).view(-1, window_length, input_size_sequential).to(device)
-            quan = torch.tensor(quan, dtype=torch.float).view(-1, window_length, input_size_quantitive).to(device)
+            seq = torch.tensor(seq, dtype=torch.float).view(-1, window_length, input_size_sequential)
+            quan = torch.tensor(quan, dtype=torch.float).view(-1, window_length, input_size_quantitive)
             # print(seq.shape, quan.shape)
             test_output = model(seq, quan)
             # print(test_output.shape)
@@ -365,57 +364,3 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
     print('Finished Predicting')
     elapsed_time = time.time() - start_time
     print('elapsed_time: {}'.format(elapsed_time))
-
-    result_dict=dict()
-    result_dict["Test Precision\t"] = str(format(P))
-    result_dict["Test Recall\t"] = str(format(R))
-    result_dict["Test F-Score\t"] = str(format(F1))
-    result_dict["Test Accuracy\t"]=str(format(Acc,".2%"))
-
-    result_str = 'FP: {}, FN: {}, TP: {}, TN: {}'.format(FP, FN, TP, TN)
-
-    return result_str, result_dict
-
-
-
-
-
-if __name__ == '__main__':
-    hidden_size = 128
-    num_of_layers = 2
-    num_of_classes = 31
-    num_epochs = 30
-
-    window_length = 5
-    input_size_sequential = 300
-    input_size_quantitive = 31
-    batch_size = 512
-    test_batch_size = 512
-
-    num_candidates = 5
-    threshold = 3.714397962539806e-07
-
-    logparser_structed_file = './drain_result/HDFS_split_40w.log_structured.csv'
-    logparser_event_file = './drain_result/HDFS_split_40w.log_templates.csv'
-    anomaly_label_file = './drain_result/anomaly_label.csv'
-
-    sequential_directory = './sequential_files/'
-    train_file_name = 'loganomaly_train_file'
-    test_file_name = 'loganomaly_test_file'
-    valid_file_name = 'loganomaly_valid_file'
-
-    train_file = sequential_directory + train_file_name
-    test_file = sequential_directory + test_file_name
-    model_out_path = './output/'
-
-    wordvec_file_path = 'G:\\crawl-300d-2M.vec'
-    pattern_vec_out_path = './drain_result/pattern_vec'
-
-    do_predict(window_length, input_size_sequential, input_size_quantitive, hidden_size, num_of_layers, num_of_classes,
-               model_out_path + 'Adam_batch_size=' + str(batch_size) + ';epoch=' + str(num_epochs) + '.pt',
-               test_file, pattern_vec_out_path, num_candidates, threshold)
-
-    def loganomaly_run(test_file_app):
-        do_predict(window_length, input_size_sequential, input_size_quantitive, hidden_size, num_of_layers, num_of_classes,
-                   model_out_path + 'Adam_batch_size=' + str(batch_size) + ';epoch=' + str(num_epochs) + '.pt',
-                   test_file_app, pattern_vec_out_path, num_candidates, threshold)

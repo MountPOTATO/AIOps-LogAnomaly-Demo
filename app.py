@@ -35,7 +35,8 @@ def predict():
             # ！！！如果你的文件格式不是.txt或.log，请在home.html第55行代码的accept处添加你的文件格式以供支持
             file = request.files.get('file-dir')
             print(file)
-            #loganomaly_run(file)
+            result_str, result_dict = loganomaly_run(file)
+            return render_template('result.html', log_str=result_str, table_dict=result_dict)
             #content = file.read().decode("utf-8")
             #print(content)
             #log_list = content.split("\n")
