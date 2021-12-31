@@ -4,6 +4,9 @@
 *.idea
 *.__pycache__
 .idea/misc.xml
+/__pycache__
+*/__pycache__
+*/*/__pycache__
 __pycache__/app.cpython-39.pyc
 .idea/misc.xml
-.idea/misc.xml
+
