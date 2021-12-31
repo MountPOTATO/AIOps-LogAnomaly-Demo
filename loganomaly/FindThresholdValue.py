@@ -3,7 +3,7 @@ import json
 import time
 
 import numpy as np
-import LogAnomaly_Test
+import main
 import torch
 from sklearn.metrics import precision_recall_curve
 

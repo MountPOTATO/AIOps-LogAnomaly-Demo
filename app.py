@@ -1,4 +1,6 @@
 from flask import Flask, render_template, url_for, request
+
+from loganomaly.main import loganomaly_run
 from transformer.main import transformer_test
 
 app = Flask(__name__)
@@ -32,8 +34,11 @@ def predict():
             # 文件的导入在home.html里面点击选择文件按钮，选择你的文件就可以了
             # ！！！如果你的文件格式不是.txt或.log，请在home.html第55行代码的accept处添加你的文件格式以供支持
             file = request.files.get('file-dir')
-            content = file.read().decode("utf-8")
-            log_list = content.split("\n")
+            print(file)
+            #loganomaly_run(file)
+            #content = file.read().decode("utf-8")
+            #print(content)
+            #log_list = content.split("\n")
 
             #要生成的两个变量：
             # 变量1. 一个保存了所有异常日志的字符串(Encoder中的result_log_str)，
