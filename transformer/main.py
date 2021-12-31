@@ -12,7 +12,7 @@ from transformer.encoder.Encoder import Encoder
 from transformer.learning.self_atten_train import SelfAttentive, make_src_mask
 import torch
 
-MODEL_OUTPUT_PATH = "./transformer/output/model.pt"
+MODEL_OUTPUT_PATH = "./transformer/output/model2.pt"
 ORIGIN_LOG_PATH = "./transformer/output/BGL_2k.log"
 INDEX_VEC_OUT_PATH = "./transformer/output/index_vec"
 PATTERN_VEC_OUT_PATH = "./transformer/output/pattern_vec"
@@ -66,13 +66,15 @@ def evaluateEpsilon(model, index_vec_path, iterator, epsilon):
             src_mask = make_src_mask(src, PAD_IDX)
             src = log_index_sequence_to_vec(src, index_vec_path)
             output = model(src, src_mask)
-            # print("output", output)
+
 
             # output = [batch size,1]
             zero = torch.zeros(output.shape)
             one = torch.ones(output.shape)
 
-            pred_choice = torch.where(output >= epsilon, one, zero)
+            # pred_choice = torch.where(output >= epsilon, one, zero)
+            pred_choice = torch.where(output >= 0.6902, one, zero)
+            print(pred_choice)
 
             for pred in pred_choice:
                 pred_res.append(pred)
@@ -85,7 +87,7 @@ def evaluateEpsilon(model, index_vec_path, iterator, epsilon):
 
             FP += torch.sum((pred_choice == 1) & (trg == 0))
 
-            print(f"第{i}组测试")
+            # print(f"第{i}组测试")
 
     return pred_res, TP, TN, FN, FP
 
@@ -153,20 +155,23 @@ def transformer_test(log_list):
     F1 = 2 * r * p / (r + p)
     acc = (TP + TN) / (TP + TN + FP + FN)
 
-    # print(pred_res)
-    # print(f'| Test Precision: {p:.3f} |')
-    # print(f'| Test Recall: {r:.3f} |')
-    # print(f'| Test F-Score: {F1:.3f} |')
-    # print(f'| Test Accuracy: {acc:.3f} |')
+    print(pred_res)
+    print(f'| Test Precision: {p:.3f} |')
+    print(f'| Test Recall: {r:.3f} |')
+    print(f'| Test F-Score: {F1:.3f} |')
+    print(f'| Test Accuracy: {acc:.3f} |')
 
 
 
-    result_list=[i for i in log_list if i[0]!='-']
+    result_list=[log for i,log in enumerate(log_list) if int(pred_res[i])==1 and log[0]!="-"]
     result_str="\n".join(result_list)
 
     result_dict=dict()
-    result_dict["异常日志数量"]=str(int(len(result_list)*acc))
-    result_dict["测试准确率"]=str(format(acc,".2%"))
+    result_dict["Test Precision\t"] = str(format(p))
+    result_dict["Test Recall\t"] = str(format(r))
+    result_dict["Test F-Score\t"] = str(format(F1))
+    result_dict["Anomaly Sum\t"] = str(format((len(result_list))))
+    result_dict["Test Accuracy\t"]=str(format(acc,".2%"))
 
 
 
