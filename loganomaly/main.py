@@ -96,6 +96,10 @@ def generateTestFile(name, window_length):
             k += 1
     return log_keys_sequences, abnormal_label
 
+def getLog(name, linenum):
+    file = pandas.read_csv(name)
+    return file["BlockId"][linenum]
+
 
 """
 Return whether a block of event is abnormal or not
@@ -142,6 +146,7 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
     TN = 0
     FN = 0
     ALL = 0
+    result_str = ''
 
     with open(pattern_vec_file, 'r') as pattern_file:
         PF = json.load(pattern_file)
@@ -225,17 +230,18 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
                     line_label.append(batch_label[i])
 
                 # Determine whether this line is abnormal or not.
-                abnormal_flag = linePrediction_Threshold(line_output, line_label, threshold)
-                # abnormal_flag = linePrediction_topK(line_output, line_label, num_candidates)
+                #abnormal_flag = linePrediction_Threshold(line_output, line_label, threshold)
+                abnormal_flag = linePrediction_topK(line_output, line_label, num_candidates)
                 if lineNum in abnormal_label:
                     ground_truth = 1
                 else:
                     ground_truth = 0
 
-                print("line:", lineNum, "Predicted Label:", abnormal_flag, "Ground Truth:", ground_truth)
+                #print("line:", lineNum, "Predicted Label:", abnormal_flag, "Ground Truth:", ground_truth)
 
                 # When this line(block) is flagged as abnormal
                 if abnormal_flag == 1:
+                    result_str += getLog(test_file, lineNum) + "\n"
                     if lineNum in abnormal_label:
                         TP += 1
                     else:
@@ -315,17 +321,18 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
                     line_label.append(batch_label[i])
 
                 # Determine whether this line is abnormal or not.
-                abnormal_flag = linePrediction_Threshold(line_output, line_label, threshold)
-                # abnormal_flag = linePrediction_topK(line_output, line_label, num_candidates)
+                #abnormal_flag = linePrediction_Threshold(line_output, line_label, threshold)
+                abnormal_flag = linePrediction_topK(line_output, line_label, num_candidates)
                 if lineNum in abnormal_label:
                     ground_truth = 1
                 else:
                     ground_truth = 0
 
-                print("line:", lineNum, "Predicted Label:", abnormal_flag, "Ground Truth:", ground_truth)
+                #print("line:", lineNum, "Predicted Label:", abnormal_flag, "Ground Truth:", ground_truth)
 
                 # When this line(block) is flagged as abnormal
                 if abnormal_flag == 1:
+
                     if lineNum in abnormal_label:
                         TP += 1
                     else:
@@ -367,12 +374,12 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
     print('elapsed_time: {}'.format(elapsed_time))
 
     result_dict=dict()
-    result_dict["Test Precision\t"] = str(format(P))
-    result_dict["Test Recall\t"] = str(format(R))
-    result_dict["Test F-Score\t"] = str(format(F1))
-    result_dict["Test Accuracy\t"]=str(format(Acc,".2%"))
+    result_dict["Test Precision\t"] = str(format(P,".3f"))+"%"
+    result_dict["Test Recall\t"] = str(format(R,".3f"))+"%"
+    result_dict["Test F-Score\t"] = str(format(F1,".3f"))+"%"
+    result_dict["Test Accuracy\t"]=str(format(Acc,".3f"))+"%"
 
-    result_str = 'FP: {}, FN: {}, TP: {}, TN: {}'.format(FP, FN, TP, TN)
+    #result_str = 'FP: {}, FN: {}, TP: {}, TN: {}'.format(FP, FN, TP, TN)
 
     return result_str, result_dict
 
