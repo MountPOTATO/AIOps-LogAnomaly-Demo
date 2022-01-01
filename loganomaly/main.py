@@ -40,7 +40,7 @@ def loganomaly_run(test_file):
     batch_size = 512
     test_batch_size = 512
 
-    num_candidates = 5
+    num_candidates = 6
     threshold = 3.714397962539806e-07
 
     logparser_structed_file = './loganomaly/drain_result/HDFS_split_40w.log_structured.csv'
@@ -230,8 +230,8 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
                     line_label.append(batch_label[i])
 
                 # Determine whether this line is abnormal or not.
-                #abnormal_flag = linePrediction_Threshold(line_output, line_label, threshold)
-                abnormal_flag = linePrediction_topK(line_output, line_label, num_candidates)
+                abnormal_flag = linePrediction_Threshold(line_output, line_label, threshold)
+                #abnormal_flag = linePrediction_topK(line_output, line_label, num_candidates)
                 if lineNum in abnormal_label:
                     ground_truth = 1
                 else:
@@ -321,8 +321,8 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
                     line_label.append(batch_label[i])
 
                 # Determine whether this line is abnormal or not.
-                #abnormal_flag = linePrediction_Threshold(line_output, line_label, threshold)
-                abnormal_flag = linePrediction_topK(line_output, line_label, num_candidates)
+                abnormal_flag = linePrediction_Threshold(line_output, line_label, threshold)
+                #abnormal_flag = linePrediction_topK(line_output, line_label, num_candidates)
                 if lineNum in abnormal_label:
                     ground_truth = 1
                 else:
@@ -378,6 +378,7 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
     result_dict["Test Recall\t"] = str(format(R,".3f"))+"%"
     result_dict["Test F-Score\t"] = str(format(F1,".3f"))+"%"
     result_dict["Test Accuracy\t"]=str(format(Acc,".3f"))+"%"
+    result_dict["Elapsed Time\t"] = str(format(elapsed_time)) + "%"
 
     #result_str = 'FP: {}, FN: {}, TP: {}, TN: {}'.format(FP, FN, TP, TN)
 
