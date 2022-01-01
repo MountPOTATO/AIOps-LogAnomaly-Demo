@@ -147,6 +147,7 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
     FN = 0
     ALL = 0
     result_str = ''
+    abnormal_num = 0
 
     with open(pattern_vec_file, 'r') as pattern_file:
         PF = json.load(pattern_file)
@@ -242,6 +243,7 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
                 # When this line(block) is flagged as abnormal
                 if abnormal_flag == 1:
                     result_str += getLog(test_file, lineNum) + "\n"
+                    abnormal_num += 1
                     if lineNum in abnormal_label:
                         TP += 1
                     else:
@@ -332,7 +334,8 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
 
                 # When this line(block) is flagged as abnormal
                 if abnormal_flag == 1:
-
+                    result_str += getLog(test_file, lineNum) + "\n"
+                    abnormal_num += 1
                     if lineNum in abnormal_label:
                         TP += 1
                     else:
@@ -374,11 +377,12 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
     print('elapsed_time: {}'.format(elapsed_time))
 
     result_dict=dict()
+    result_dict["Number of Abnormal Log Blocks\t"] = str(format(abnormal_num))
     result_dict["Test Precision\t"] = str(format(P,".3f"))+"%"
     result_dict["Test Recall\t"] = str(format(R,".3f"))+"%"
     result_dict["Test F-Score\t"] = str(format(F1,".3f"))+"%"
     result_dict["Test Accuracy\t"]=str(format(Acc,".3f"))+"%"
-    result_dict["Elapsed Time\t"] = str(format(elapsed_time)) + "%"
+    #result_dict["Elapsed Time\t"] = str(format(elapsed_time)) + "%"
 
     #result_str = 'FP: {}, FN: {}, TP: {}, TN: {}'.format(FP, FN, TP, TN)
 
