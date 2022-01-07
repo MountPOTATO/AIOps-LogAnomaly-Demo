@@ -32,7 +32,7 @@ def loganomaly_run():
     hidden_size = 128
     num_of_layers = 2
     num_of_classes = 31
-    num_epochs = 30
+    num_epochs = 15
 
     window_length = 5
     input_size_sequential = 300
@@ -49,7 +49,7 @@ def loganomaly_run():
 
     sequential_directory = './loganomaly/sequential_files/'
     train_file_name = 'loganomaly_train_file'
-    test_file_name = 'loganomaly_test_file.csv'
+    test_file_name = 'loganomaly_test_file'
     valid_file_name = 'loganomaly_valid_file'
 
     train_file = sequential_directory + train_file_name
@@ -390,46 +390,3 @@ def do_predict(window_length, input_size_sequential, input_size_quantitive, hidd
 
     return result_str, result_dict
 
-
-
-
-
-if __name__ == '__main__':
-    hidden_size = 128
-    num_of_layers = 2
-    num_of_classes = 31
-    num_epochs = 30
-
-    window_length = 5
-    input_size_sequential = 300
-    input_size_quantitive = 31
-    batch_size = 512
-    test_batch_size = 512
-
-    num_candidates = 5
-    threshold = 3.714397962539806e-07
-
-    logparser_structed_file = './drain_result/HDFS_split_40w.log_structured.csv'
-    logparser_event_file = './drain_result/HDFS_split_40w.log_templates.csv'
-    anomaly_label_file = './drain_result/anomaly_label.csv'
-
-    sequential_directory = './sequential_files/'
-    train_file_name = 'loganomaly_train_file'
-    test_file_name = 'loganomaly_test_file'
-    valid_file_name = 'loganomaly_valid_file'
-
-    train_file = sequential_directory + train_file_name
-    test_file = sequential_directory + test_file_name
-    model_out_path = './output/'
-
-    wordvec_file_path = 'G:\\crawl-300d-2M.vec'
-    pattern_vec_out_path = './drain_result/pattern_vec'
-
-    do_predict(window_length, input_size_sequential, input_size_quantitive, hidden_size, num_of_layers, num_of_classes,
-               model_out_path + 'Adam_batch_size=' + str(batch_size) + ';epoch=' + str(num_epochs) + '.pt',
-               test_file, pattern_vec_out_path, num_candidates, threshold)
-
-    def loganomaly_run(test_file_app):
-        do_predict(window_length, input_size_sequential, input_size_quantitive, hidden_size, num_of_layers, num_of_classes,
-                   model_out_path + 'Adam_batch_size=' + str(batch_size) + ';epoch=' + str(num_epochs) + '.pt',
-                   test_file_app, pattern_vec_out_path, num_candidates, threshold)

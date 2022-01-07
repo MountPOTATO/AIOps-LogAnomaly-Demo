@@ -37,7 +37,7 @@ def predict():
             # ！！！如果你的文件格式不是.txt或.log，请在home.html第55行代码的accept处添加你的文件格式以供支持
             sequential_directory = './loganomaly/sequential_files/'
             file = request.files.get('file-dir')
-            file_path = os.path.join(sequential_directory, file.filename)
+            file_path = os.path.join(sequential_directory, 'loganomaly_test_file')
             file.save(file_path)
             result_str, result_dict = loganomaly_run()
             return render_template('result.html', log_str=result_str, table_dict=result_dict)
