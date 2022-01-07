@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, url_for, request
 
 from loganomaly.main import loganomaly_run
@@ -33,9 +35,11 @@ def predict():
             # 这部分的函数触发将在选择了日志文件，点击了predict按钮后运行
             # 文件的导入在home.html里面点击选择文件按钮，选择你的文件就可以了
             # ！！！如果你的文件格式不是.txt或.log，请在home.html第55行代码的accept处添加你的文件格式以供支持
+            sequential_directory = './loganomaly/sequential_files/'
             file = request.files.get('file-dir')
-            print(file)
-            result_str, result_dict = loganomaly_run(file)
+            file_path = os.path.join(sequential_directory, file.filename)
+            file.save(file_path)
+            result_str, result_dict = loganomaly_run()
             return render_template('result.html', log_str=result_str, table_dict=result_dict)
             #content = file.read().decode("utf-8")
             #print(content)

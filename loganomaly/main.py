@@ -28,7 +28,7 @@ class Model(nn.Module):
         #print(out)
         return out
 
-def loganomaly_run(test_file):
+def loganomaly_run():
     hidden_size = 128
     num_of_layers = 2
     num_of_classes = 31
@@ -49,7 +49,7 @@ def loganomaly_run(test_file):
 
     sequential_directory = './loganomaly/sequential_files/'
     train_file_name = 'loganomaly_train_file'
-    test_file_name = 'loganomaly_test_file'
+    test_file_name = 'loganomaly_test_file.csv'
     valid_file_name = 'loganomaly_valid_file'
 
     train_file = sequential_directory + train_file_name
@@ -58,6 +58,8 @@ def loganomaly_run(test_file):
 
     wordvec_file_path = 'G:\\crawl-300d-2M.vec'
     pattern_vec_out_path = './loganomaly/drain_result/pattern_vec'
+
+
     result_str, result_dict = do_predict(window_length, input_size_sequential, input_size_quantitive, hidden_size, num_of_layers, num_of_classes,
                model_out_path + 'Adam_batch_size=' + str(batch_size) + ';epoch=' + str(num_epochs) + '.pt',
                test_file, pattern_vec_out_path, num_candidates, threshold)
