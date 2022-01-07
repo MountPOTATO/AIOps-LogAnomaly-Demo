@@ -167,11 +167,11 @@ def transformer_test(log_list):
     result_str="\n".join(result_list)
 
     result_dict=dict()
-    result_dict["Test Precision\t"] = str(format(p))
-    result_dict["Test Recall\t"] = str(format(r))
-    result_dict["Test F-Score\t"] = str(format(F1))
+    result_dict["Test Precision\t"] = str(format(p,".3%"))
+    result_dict["Test Recall\t"] = str(format(r,".3%"))
+    result_dict["Test F-Score\t"] = str(format(F1,".3%"))
     result_dict["Anomaly Sum\t"] = str(format((len(result_list))))
-    result_dict["Test Accuracy\t"]=str(format(acc,".2%"))
+    result_dict["Test Accuracy\t"]=str(format(acc,".3%"))
 
 
 

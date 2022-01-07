@@ -15,6 +15,8 @@ def home():
 
 @app.route('/predict', methods=["POST"])
 def predict():
+    print(request.files)
+    print(request.form)
 
     model_name, log_file = None, None
     if request.method == 'POST':
