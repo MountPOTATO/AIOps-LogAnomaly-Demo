@@ -90,12 +90,11 @@ def generateTestFile(name, window_length):
         label = file["label"][i]
         if len(line) < window_length:
             continue
-        else:
-            log_keys_sequences.append(tuple(line))
-            # print(label)
-            if label == 1:
-                abnormal_label.append(k)
-            k += 1
+        log_keys_sequences.append(tuple(line))
+        # print(label)
+        if label == 1:
+            abnormal_label.append(k)
+        k += 1
     return log_keys_sequences, abnormal_label
 
 def getLog(name, linenum):
